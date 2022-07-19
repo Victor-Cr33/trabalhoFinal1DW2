@@ -41,7 +41,7 @@ class CursoController extends Controller{
             'nome' => $request->nome,
             'sigla' => $request->sigla,
             'tempo' => $request->tempo,
-            'eixo_id' => $request->eixos
+            'eixo_id' => $request->eixo
         ]);
         
         return redirect()->route('cursos.index');
@@ -49,11 +49,12 @@ class CursoController extends Controller{
 
     public function show($id){
 
+        $eixos = Eixo::all();
         $data = Curso::find($id);
 
         if(!isset($data)) { return "<h1>ID: $id não encontrado!</h1>"; }
 
-        return view('cursos.edit', compact('data')); 
+        return view('cursos.edit', compact(['data','eixos'])); 
     }
 
     public function edit($id){
@@ -62,11 +63,12 @@ class CursoController extends Controller{
 
         if(!isset($data)) { return "<h1>ID: $id não encontrado!</h1>"; }
 
-        return view('cursos.edit', compact('data','eixos')); 
+        return view('cursos.edit', compact(['data','eixos'])); 
     }
 
     public function update(Request $request, $id){
          
+        $eixos = Eixo::all();
         $obj = Curso::find($id);
 
         if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
@@ -74,7 +76,8 @@ class CursoController extends Controller{
         $obj->fill([
             'nome' => $request->nome,
             'sigla' => $request->sigla,
-            'tempo' => $request->tempo
+            'tempo' => $request->tempo,
+            'eixo_id' => $request -> eixo,
         ]);
 
         $obj->save();

@@ -52,7 +52,7 @@
                     placeholder="Tempo"
                     value="{{old('tempo')}}"
                 />
-                <label for="nome">Tempo</label>
+                <label for="nome">Tempo do Curso(anos)</label>
                 @if($errors->has('tempo'))
                     <div class='invalid-feedback'>
                         {{ $errors->first('tempo') }}
@@ -64,7 +64,7 @@
     <div class="row">
         <div class="col" >
             <div class="input-group mb-3">
-                <span class="input-group-text bg-success text-white">Eixo</span>
+                <span class="input-group-text bg-success text-white">Eixo/Área</span>
                 <select 
                     name="eixo"
                     class="form-select"
