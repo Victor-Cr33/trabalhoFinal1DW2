@@ -30,7 +30,7 @@
                     type="text" 
                     class="form-control @if($errors->has('sigla')) is-invalid @endif" 
                     name="sigla" 
-                    value="{{$data->sigla}}"
+                    value="{{old('sigla')}}"
                     placeholder="Sigla"
                 />
                 <label for="sigla">Sigla do Curso</label>

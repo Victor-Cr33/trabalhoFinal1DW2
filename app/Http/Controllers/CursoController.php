@@ -4,20 +4,23 @@ namespace App\Http\Controllers;
 use App\Models\Veterinario;
 use Illuminate\Http\Request;
 use App\Models\Curso;
+use App\Models\Eixo;
 
 class CursoController extends Controller{
    
     public function index(){
        
-        $dados = Curso::all();
-        return view('cursos.index', compact('data'));
+        $eixos = Eixo::all();
+        $data = Curso::all();
+        return view('cursos.index', compact(['data','eixos']));
     }
 
     public function create(){
-
+       
+        $eixos = Eixo::all();
         $cursos = Curso::all();
         if(!isset($cursos)){return"<h1>ID: Não há cursos cadastradas!</h1>";}
-        return view('cursos.create', compact('cursos'));
+        return view('cursos.create', compact(['cursos','eixos']));
     }
 
     public function store(Request $request){
@@ -54,7 +57,7 @@ class CursoController extends Controller{
 
         if(!isset($data)) { return "<h1>ID: $id não encontrado!</h1>"; }
 
-        return view('cursos.edit', compact(['data','eixos'])); 
+        return view('cursos.show', compact(['data','eixos'])); 
     }
 
     public function edit($id){
