@@ -20,3 +20,6 @@ Route::get('/', function () {
 Route::resource('eixos', 'EixoController');
 
 Route::resource('cursos', 'CursoController');
+
+
+Route::resource('professores', 'ProfessorController');
