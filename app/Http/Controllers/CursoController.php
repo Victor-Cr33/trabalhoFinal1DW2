@@ -18,9 +18,7 @@ class CursoController extends Controller{
     public function create(){
        
         $eixos = Eixo::all();
-        $cursos = Curso::all();
-        if(!isset($cursos)){return"<h1>ID: Não há cursos cadastradas!</h1>";}
-        return view('cursos.create', compact(['cursos','eixos']));
+        return view('cursos.create', compact('eixos'));
     }
 
     public function store(Request $request){

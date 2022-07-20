@@ -34,18 +34,17 @@ class ProfessorController extends Controller{
     public function create(){
        
         $eixos = Eixo::all();
-        $data = Professor::all();
-        if(!isset($data)){return"<h1>ID: Não há professores cadastradas!</h1>";}
-        return view('professores.create', compact(['data','eixos']));
+       
+
+        return view('professores.create', compact('eixos'));
     }
 
     public function store(Request $request){
-       /* 
+    
         $regras = [
             'nome' => 'required|max:100|min:10',
             'email' => 'required|max:250|min:15',
             'siape' => 'required|max:10|min:8',
-            'eixo_id' =>'required',
             'ativo' => 'required',
         ];
 
@@ -55,9 +54,9 @@ class ProfessorController extends Controller{
             "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!",
             "unique" => "Já existe um professor cadastrado com esse [:attribute]!"
         ];
- 
+
         $request->validate($regras, $msgs);
-*/
+ 
         Professor::create([
             'nome' => $request->nome,
             'email' => $request->email,
