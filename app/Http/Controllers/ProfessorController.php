@@ -10,21 +10,37 @@ class ProfessorController extends Controller{
    
     public function index(){
        
-        $eixos = Eixo::all();
+        $eixo = Eixo::all();
         $data = Professor::all();
-        return view('professores.index', compact(['data','eixos']));
+
+        foreach ($data as $key) {
+            if ($key->ativo == 1) {
+                $key->ativo = "Ativo";
+            }else if ($key->ativo == 0){
+                $key->ativo = "Inativo";}
+            if ($eixo!= null){
+                foreach($eixo as $k){
+                    if($key->eixo_id == $k->id){
+                        $key->eixo_id = $k->nome;
+                    }elseif($key->curso_id == $k->id){
+                        $key->curso_id = $k->nome;
+                    }
+                }
+            }
+        } 
+        return view('professores.index', compact(['data','eixo']));
     }
 
     public function create(){
        
         $eixos = Eixo::all();
-        $professores = Professor::all();
-        if(!isset($professores)){return"<h1>ID: Não há professores cadastradas!</h1>";}
-        return view('professores.create', compact(['professores','eixos']));
+        $data = Professor::all();
+        if(!isset($data)){return"<h1>ID: Não há professores cadastradas!</h1>";}
+        return view('professores.create', compact(['data','eixos']));
     }
 
     public function store(Request $request){
-        
+       /* 
         $regras = [
             'nome' => 'required|max:100|min:10',
             'email' => 'required|max:250|min:15',
@@ -41,13 +57,13 @@ class ProfessorController extends Controller{
         ];
  
         $request->validate($regras, $msgs);
-
+*/
         Professor::create([
             'nome' => $request->nome,
-            'email' => $request->sigla,
-            'siape' => $request->tempo,
-            'eixo_id' => $required,
-            'ativo' => $required,
+            'email' => $request->email,
+            'siape' => $request->siape,
+            'eixo_id' => $request->eixos,
+            'ativo' => true
         ]);
         
         return redirect()->route('professores.index');
@@ -55,36 +71,52 @@ class ProfessorController extends Controller{
    
     public function show($id){
 
-        $eixos = Eixo::all();
+        $eixo = Eixo::all();
         $data = Professor::find($id);
+        
+        foreach ($data as $key) {
+            if ($key->ativo == 1) {
+                $key->ativo = "Ativo";
+            }else if ($key->ativo == 0){
+                $key->ativo = "Inativo";}
+            if ($eixo!= null){
+                foreach($eixo as $k){
+                    if($key->eixo_id == $k->id){
+                        $key->eixo_id = $k->nome;
+                    }elseif($key->curso_id == $k->id){
+                        $key->curso_id = $k->nome;
+                    }
+                }
+            }
+        } 
 
         if(!isset($data)) { return "<h1>ID: $id não encontrado!</h1>"; }
 
-        return view('professores.show', compact(['data','eixos'])); 
+        return view('professores.show', compact(['data','eixo'])); 
     }
 
     public function edit($id){
-        $eixos = Eixo::all();
+        $eixo = Eixo::all();
         $data = Professor::find($id);
 
         if(!isset($data)) { return "<h1>ID: $id não encontrado!</h1>"; }
 
-        return view('professores.edit', compact(['data','eixos'])); 
+        return view('professores.edit', compact(['data','eixo'])); 
     }
 
     public function update(Request $request, $id){
          
-        $eixos = Eixo::all();
+        $eixo = Eixo::all();
         $obj = Professor::find($id);
 
         if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
 
         $obj->fill([
-            'nome' => $required,
-            'email' => $required,
-            'siape' => $required,
-            'eixo_id' => $required,
-            'ativo' => $required,
+            'nome' => $request->nome,
+            'email' => $request->email,
+            'siape' => $request->siape,
+            'eixo_id' => $request->eixos,
+            'ativo' => $request->ativo,
         ]);
 
         $obj->save();

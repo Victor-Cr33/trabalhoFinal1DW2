@@ -1,8 +1,8 @@
-@extends('templates/main', ['titulo'=>"Alterar Aluno"])
+@extends('templates/main', ['titulo'=>"Alterar Professor"])
 
 @section('conteudo')
 
-<form action="{{ route('alunos.update', $data->id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('professores.update', $data->id) }}" method="POST">
     @csrf
     @method('PUT')
     <div class="row">
@@ -22,48 +22,15 @@
             </div>
         </div>
     </div>
+    
     <div class="row">
         <div class="col" >
             <div class="input-group mb-3">
-                <span class="input-group-text bg-success text-white">Matrícula</span>
+                <span class="input-group-text bg-success text-white">Email</span>
                 <input type="text" 
-                    class="form-control @if($errors->has('matricula')) is-invalid @endif"
-                    name="matricula" 
-                    value="{{$data->matricula}}" 
-                />
-                @if($errors->has('matricula'))
-                    <div class='invalid-feedback'>
-                        {{ $errors->first('matricula') }}
-                    </div>
-                @endif
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col" >
-            <div class="input-group mb-3">
-                <span class="input-group-text bg-success text-white">Nascimento</span>
-                <input type="date" 
-                    class="form-control @if($errors->has('data')) is-invalid @endif"
-                    name="data" 
-                    value="{{$data->nascimento}}" 
-                />
-                @if($errors->has('data'))
-                    <div class='invalid-feedback'>
-                        {{ $errors->first('data') }}
-                    </div>
-                @endif
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col" >
-            <div class="input-group mb-3">
-                <span class="input-group-text bg-success text-white">E-mail</span>
-                <input type="email" 
                     class="form-control @if($errors->has('email')) is-invalid @endif"
                     name="email" 
-                    value="{{$data->email}}" 
+                    value="{{$data->email}}"
                 />
                 @if($errors->has('email'))
                     <div class='invalid-feedback'>
@@ -76,16 +43,15 @@
     <div class="row">
         <div class="col" >
             <div class="input-group mb-3">
-                <span class="input-group-text bg-success text-white">Telefone</span>
-                <input type="text" 
-                    class="form-control @if($errors->has('telefone')) is-invalid @endif"
-                    name="telefone" 
-                    value="{{$data->telefone}}"
-                    data-mask="(00)0000-0000"
+                <span class="input-group-text bg-success text-white">Siape</span>
+                <input type="number" 
+                    class="form-control @if($errors->has('siape')) is-invalid @endif"
+                    name="siape" 
+                    value="{{$data->siape}}"
                 />
-                @if($errors->has('telefone'))
+                @if($errors->has('siape'))
                     <div class='invalid-feedback'>
-                        {{ $errors->first('telefone') }}
+                        {{ $errors->first('siape') }}
                     </div>
                 @endif
             </div>
@@ -94,120 +60,47 @@
     <div class="row">
         <div class="col" >
             <div class="input-group mb-3">
-                <span class="input-group-text bg-success text-white">Curso</span>
+                <span class="input-group-text bg-success text-white">Eixo/Área</span>
                 <select 
-                    name="curso"
+                    name="eixo"
                     class="form-select"
-                    required
+                    class="form-control @if($errors->has('eixo')) is-invalid @endif" 
                 >
-                    @foreach ($cursos as $item)
-                        @if($item->nome == $data->curso)
-                            <option selected="true">{{ $item->nome }}</option>
-                        @else
-                            <option>{{ $item->nome }}</option>
-                        @endif
+                    @foreach ($eixo as $item)
+                        <option value="{{$item->id}}" @if($item->id == old('eixo')) selected="true" @endif>
+                            {{ $item->nome }}
+                        </option>
                     @endforeach
                 </select>
+              
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col" >
-            <div class="input-group mb-3">
-                <span class="input-group-text bg-success text-white">Ano de Ingresso</span>
-                <input type="number" 
-                    class="form-control @if($errors->has('ano')) is-invalid @endif"
-                    name="ano" 
-                    value="{{$data->ano_ingresso}}"
-                />
-                @if($errors->has('ano'))
+            <div class="form-check @if($errors->has('ativo')) is-invalid @endif">
+                <input class="form-check-input-Success" type="radio" name="ativo" id="ativo"  value="{{$data->ativos}}" checked>           
+                <label class="form-check-label" for="flexRadioDefault2">
+                    Ativo
+                </label>    
+            </div>
+            <div class="form-check mb-3 form-check @if($errors->has('ativo')) is-invalid @endif">
+            <input class="form-check-input-Success" type="radio" name="ativo" id="ativo"  value="{{$data->ativos}}">
+                <label class="form-check-label" for="flexRadioDefault1">
+                    Inativo
+                </label>
+            </div>
+            @if($errors->has('ativo'))
                     <div class='invalid-feedback'>
-                        {{ $errors->first('ano') }}
+                        {{ $errors->first('ativo') }}
                     </div>
-                @endif
-            </div>
+                    @endif
         </div>
     </div>
+
     <div class="row">
         <div class="col">
-            <div class="form-floating mb-3">
-                <textarea
-                    type="text"
-                    class="form-control @if($errors->has('endereco')) is-invalid @endif"
-                    name="endereco"
-                    placeholder="Endereço do Responsável"
-                    style="min-height: 100px"
-                >{{$data->endereco}}</textarea>
-                <label for="descricao">Endereço do Responsável</label>
-                @if($errors->has('endereco'))
-                    <div class='invalid-feedback'>
-                        {{ $errors->first('endereco') }}
-                    </div>
-                @endif
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="form-floating mb-3">
-                <textarea
-                    type="text"
-                    class="form-control @if($errors->has('perfil')) is-invalid @endif"
-                    name="perfil"
-                    placeholder="Perfil do Aluno"
-                    style="min-height: 100px"
-                >{{$data->perfil}}</textarea>
-                <label for="descricao">Perfil do Aluno</label>
-                @if($errors->has('perfil'))
-                    <div class='invalid-feedback'>
-                        {{ $errors->first('perfil') }}
-                    </div>
-                @endif
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <ul class="list-group mb-3">
-                <span class="input-group-text w-100 bg-success text-white">Necessidades Específicas</span>
-                @foreach ($necessidades as $item)
-                    <li class="list-group-item">
-                        @php $flag = false @endphp
-                        @foreach ($data->necessidades as $n)
-                            @if($item->id == $n->id)
-                                @php $flag = true @endphp
-                            @endif
-                        @endforeach
-                        <input class="form-check-input me-1" type="checkbox" name="necessidades" @if($flag) checked @endif value="{{ $item->id }}" aria-label="...">
-                        {{ $item->nome }}
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <ul class="list-group mb-3">
-                <span class="input-group-text w-100 bg-success text-white">Laudos Cadastrados</span>
-                @foreach ($data->laudos as $l)
-                    <li class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" checked value="{{ $l->id }}" aria-label="...">    
-                        <a href= "{{ asset('storage/files/'.$l->arquivo) }}" target="_blank">{{$l->arquivo}}</a>
-                    </li>    
-                @endforeach
-            </ul>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="input-group mb-3">
-                <input class="form-control" type="file" id="laudos" multiple>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <a href="{{route('alunos.index')}}" class="btn btn-secondary btn-block align-content-center">
+            <a href="{{route('professores.index')}}" class="btn btn-secondary btn-block align-content-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
                     <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1z"/>
                 </svg>

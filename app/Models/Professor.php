@@ -10,6 +10,6 @@ class Professor extends Model
 {
     use HasFactory;
     use SoftDeletes;
-
-    protected $fillable = ['nome', 'email','siape', 'eixo_id','ativo',];
+    protected $table = "professores";
+    protected $fillable = ['nome', 'email','siape', 'eixo_id','ativo'];
 }

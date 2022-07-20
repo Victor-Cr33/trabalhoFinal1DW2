@@ -7,16 +7,6 @@
     <div class="row">
         <div class="col" >
             <div class="input-group mb-3">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-                    <label class="form-check-label" for="flexSwitchCheckChecked">Ativo/Inativo</label>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col" >
-            <div class="input-group mb-3">
                 <span class="input-group-text bg-success text-white">Nome</span>
                 <input type="text" 
                     class="form-control @if($errors->has('nome')) is-invalid @endif"
@@ -70,24 +60,42 @@
             <div class="input-group mb-3">
                 <span class="input-group-text bg-success text-white">Eixo/Área</span>
                 <select 
-                    name="eixo"
+                    name="eixos"
                     class="form-select"
                     class="form-control @if($errors->has('eixo')) is-invalid @endif" 
                 >
                     @foreach ($eixos as $item)
-                        <option value="{{$item->id}}" @if($item->id == old('eixo')) selected="true" @endif>
+                        <option value="{{$item->id}}" @if($item->id == old('eixos')) selected="true" @endif>
                             {{ $item->nome }}
                         </option>
                     @endforeach
                 </select>
-                @if($errors->has('eixo'))
-                    <div class='invalid-feedback'>
-                        {{ $errors->first('eixo') }}
-                    </div>
-                @endif
+              
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col" >
+            <div class="form-check @if($errors->has('ativo')) is-invalid @endif">
+                <input class="form-check-input-Success" type="radio" name="ativo" id="ativo" value=true checked>           
+                <label class="form-check-label" for="flexRadioDefault2">
+                    Ativo
+                </label>    
+            </div>
+            <div class="form-check mb-3 form-check @if($errors->has('ativo')) is-invalid @endif">
+            <input class="form-check-input-Success" type="radio" name="ativo" id="ativo" value=false>
+                <label class="form-check-label" for="flexRadioDefault1">
+                    Inativo
+                </label>
+            </div>
+            @if($errors->has('ativo'))
+                    <div class='invalid-feedback'>
+                        {{ $errors->first('ativo') }}
+                    </div>
+                    @endif
+        </div>
+    </div>
+
     <div class="row">
         <div class="col">
             <a href="{{route('professores.index')}}" class="btn btn-secondary btn-block align-content-center">

@@ -8,9 +8,10 @@
         <x-datalist
             :title="'Professores'"
             :crud="'professores'"
-            :header="['ID', 'NOME', 'EIXO','STATUS',  'AÇÕES']" 
-            :fields="['id', 'nome', 'eixo', 'status']"
+            :header="['ID', 'NOME', 'EIXO','STATUS','AÇÕES']" 
+            :fields="['id', 'nome', 'eixo_id', 'ativo']"
             :data="$data"
+            :eixo="$eixo"
             :hide="[true, false, true, false, true]" 
             :info="['id','nome', 'eixo', 'status']"
             :remove="'nome'"
