@@ -12,4 +12,13 @@ class Eixo extends Model {
     use SoftDeletes;
 
     protected $fillable = ['nome'];
+
+    
+    public function curso(){
+        return $this->hasMany('App\Models\Curso');
+    }
+
+    public function professor(){
+        return $this->hasMany('App\Models\Professor');
+    }
 }

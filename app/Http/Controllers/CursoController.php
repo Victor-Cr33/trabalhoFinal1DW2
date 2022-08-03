@@ -62,28 +62,35 @@ class CursoController extends Controller{
         $eixos = Eixo::all();
         $data = Curso::find($id);
 
-        if(!isset($data)) { return "<h1>ID: $id não encontrado!</h1>"; }
+        if(isset($data)) { 
 
-        return view('cursos.edit', compact(['data','eixos'])); 
+            return view('cursos.edit', compact(['data','eixos'])); 
+        }else{
+            return view('cursos.index');
+        }
+    
     }
 
     public function update(Request $request, $id){
          
-        $eixos = Eixo::all();
+        $eixos = Eixo::all($request->eixos);
         $obj = Curso::find($id);
 
-        if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
+        if(isset($obj) && isset($eixos)){
+   
+            $obj->nome -> $request->nome;
+            $obj->sigla -> $request->sigla;
+            $obj->tempo -> $request->tempo;
+            $obj->eixo()->associate($eixos);
+            $obj->save();
 
-        $obj->fill([
-            'nome' => $request->nome,
-            'sigla' => $request->sigla,
-            'tempo' => $request->tempo,
-            'eixo_id' => $request -> eixo,
-        ]);
+            return redirect()->route('cursos.index');
+        }
+        else{
+            return "<h1>ID: $id não encontrado!"; 
+            return redirect()->route('cursos.index');
+        }
 
-        $obj->save();
-
-        return redirect()->route('cursos.index');
     }
 
     public function destroy($id){

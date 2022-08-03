@@ -12,4 +12,5 @@ class Professor extends Model
     use SoftDeletes;
     protected $table = "professores";
     protected $fillable = ['nome', 'email','siape', 'eixo_id','ativo'];
+    
 }
