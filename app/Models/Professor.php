@@ -13,4 +13,12 @@ class Professor extends Model
     protected $table = "professores";
     protected $fillable = ['nome', 'email','siape', 'eixo_id','ativo'];
     
+
+    public function disciplina(){
+        return $this->hasMany('App\Models\Disciplina');
+    }
+
+    public function aluno(){
+        return $this->belongsTo('App\Models\Eixo');
+    }
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Matricula extends Model {
 
     use HasFactory;
+    use SoftDeletes;
 
     public function aluno() {
         return $this->belongsTo('App\Models\Aluno');

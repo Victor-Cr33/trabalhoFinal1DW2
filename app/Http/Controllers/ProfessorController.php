@@ -11,23 +11,9 @@ class ProfessorController extends Controller{
     public function index(){
        
         $eixo = Eixo::all();
-        $data = Professor::all();
+        $data = Professor::where('ativo', '=', 1)->get();
 
-        foreach ($data as $key) {
-            if ($key->ativo == 1) {
-                $key->ativo = "Ativo";
-            }else if ($key->ativo == 0){
-                $key->ativo = "Inativo";}
-            if ($eixo!= null){
-                foreach($eixo as $k){
-                    if($key->eixo_id == $k->id){
-                        $key->eixo_id = $k->nome;
-                    }elseif($key->curso_id == $k->id){
-                        $key->curso_id = $k->nome;
-                    }
-                }
-            }
-        } 
+        
         return view('professores.index', compact(['data','eixo']));
     }
 
@@ -57,46 +43,29 @@ class ProfessorController extends Controller{
 
         $request->validate($regras, $msgs);
  
-        Professor::create([
-            'nome' => $request->nome,
-            'email' => $request->email,
-            'siape' => $request->siape,
-            'eixo_id' => $request->eixos,
-            'ativo' => true
-        ]);
-        
+        $obj_professor = new Professor();
+        $obj_eixo = Eixo::find($request->eixo_id);
+
+
+        if(isset($obj_eixo)){
+            $obj_professor->nome = $request->nome;
+            $obj_professor->email = $request->email;
+            $obj_professor->siape = $request->siape;
+            $obj_professor->eixo()->associate($obj_eixo);
+            $ojb_professor->ativo = $request->ativo;
+            $obj_professor->save();
+
+        }
+       
         return redirect()->route('professores.index');
     }
    
     public function show($id){
-
-        $eixo = Eixo::all();
-        $data = Professor::find($id);
-        
-        foreach ($data as $key) {
-            if ($key->ativo == 1) {
-                $key->ativo = "Ativo";
-            }else if ($key->ativo == 0){
-                $key->ativo = "Inativo";}
-            if ($eixo!= null){
-                foreach($eixo as $k){
-                    if($key->eixo_id == $k->id){
-                        $key->eixo_id = $k->nome;
-                    }elseif($key->curso_id == $k->id){
-                        $key->curso_id = $k->nome;
-                    }
-                }
-            }
-        } 
-
-        if(!isset($data)) { return "<h1>ID: $id não encontrado!</h1>"; }
-
-        return view('professores.show', compact(['data','eixo'])); 
     }
 
     public function edit($id){
         $eixo = Eixo::all();
-        $data = Professor::find($id);
+        $data = Professor::withTrashed()->find($id);
 
         if(!isset($data)) { return "<h1>ID: $id não encontrado!</h1>"; }
 
@@ -105,22 +74,33 @@ class ProfessorController extends Controller{
 
     public function update(Request $request, $id){
          
-        $eixo = Eixo::all();
-        $obj = Professor::find($id);
+        $obj_eixo = Eixo::all();
+        $obj_professor = Professor::withTrashed()->find($id);
 
-        if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
+        if(!isset($obj_professor)) { return "<h1>ID: $id não encontrado!"; }
 
-        $obj->fill([
-            'nome' => $request->nome,
-            'email' => $request->email,
-            'siape' => $request->siape,
-            'eixo_id' => $request->eixos,
-            'ativo' => $request->ativo,
-        ]);
+        if(isset($obj_eixo)){
+            $obj_professor->nome = $request->nome;
+            $obj_professor->email = $request->email;
+            $obj_professor->siape = $request->siape;
+            $obj_professor->eixo()->associate($obj_eixo);
+            $obj_professor->save();
+          if($obb_professor->ativo = false && $request-> ativo == true){
+            $obj_professor->ativo = $request->ativo;
+            $obj_professor->save();
+            $obj_professor->restore();
+          }
+          elseif($obj_professor->ativo = true && $request-> ativo == false){
+            $obj_professor->ativo = $request->ativo;
+            $obj_professor->save();
+            $obj_professor->delete();
+          }
+          
+           
+            return redirect()->route('professores.index');
+        }
 
-        $obj->save();
-
-        return redirect()->route('professores.index');
+   
     }
 
     public function destroy($id){
@@ -128,10 +108,13 @@ class ProfessorController extends Controller{
         $obj = Professor::find($id);
 
         if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
-
-        $obj->destroy($id);
-
-        return redirect()->route('professores.index');
+        else{
+            $obj->ativo=false;
+            $obj->save();
+            $obj->delete();
+            return redirect()->route('professores.index');
+        }
+      
     }
 
 

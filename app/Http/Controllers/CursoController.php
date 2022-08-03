@@ -22,7 +22,7 @@ class CursoController extends Controller{
     }
 
     public function store(Request $request){
-        
+      /*  
         $regras = [
             'nome' => 'required|max:50|min:10',
             'sigla' => 'required|max:8|min:2',
@@ -38,12 +38,18 @@ class CursoController extends Controller{
  
         $request->validate($regras, $msgs);
 
-        Curso::create([
-            'nome' => $request->nome,
-            'sigla' => $request->sigla,
-            'tempo' => $request->tempo,
-            'eixo_id' => $request->eixo
-        ]);
+      */
+            $obj_curso = new Curso();
+            $eixo = Eixo::find($request->eixo_id);
+
+            if(isset($eixo)){
+                $obj_curso->nome = $request->nome;
+                $obj_curso->sigla = $request->sigla;
+                $obj_curso->tempo = $request->tempo;
+                $obj_curso->eixo()->associate($eixo);
+                $obj_curso->save();
+            }
+  
         
         return redirect()->route('cursos.index');
     }
@@ -73,16 +79,16 @@ class CursoController extends Controller{
 
     public function update(Request $request, $id){
          
-        $eixos = Eixo::all($request->eixos);
-        $obj = Curso::find($id);
+        $obj_eixo = Eixo::find($request->eixo_id);
+        $obj_curso = Curso::find($id);
 
-        if(isset($obj) && isset($eixos)){
+        if(isset($obj_curso) && isset($obj_eixo)){
    
-            $obj->nome -> $request->nome;
-            $obj->sigla -> $request->sigla;
-            $obj->tempo -> $request->tempo;
-            $obj->eixo()->associate($eixos);
-            $obj->save();
+            $obj_curso->nome = $request->nome;
+            $obj_curso->sigla = $request->sigla;
+            $obj_curso->tempo = $request->tempo;
+            $obj_curso->eixo()->associate($obj_eixo);
+            $obj_curso->save();
 
             return redirect()->route('cursos.index');
         }

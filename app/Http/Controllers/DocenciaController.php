@@ -37,16 +37,14 @@ class DocenciaController extends Controller{
 
     public function store(Request $request){
 
-
         $profes = $request->professor;
         $discip= $request->disciplina;
 
-        
         $docencias = new Docencia();
          
-        for ($i = 0; $i < count($profes); $i++) {
-            $docencias->professor_id = $profes[$i];
-            $docencias->disciplina_id = $discip[$i];
+        for ($i = 0; $i < count($discip); $i++) {
+            $docencias-> Disciplina()::find ($discip[$i]);
+            $docencias->professor()->associate($profes[$i]);
             $docencias->save();
         }
  

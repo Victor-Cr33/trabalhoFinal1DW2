@@ -77,13 +77,13 @@
     <div class="row">
         <div class="col" >
             <div class="form-check @if($errors->has('ativo')) is-invalid @endif">
-                <input class="form-check-input-Success" type="radio" name="ativo" id="ativo" value=true checked>           
+                <input class="form-check-input-Success" type="radio" name="ativo" id="ativo" value= "true" checked>           
                 <label class="form-check-label" for="flexRadioDefault2">
                     Ativo
                 </label>    
             </div>
             <div class="form-check mb-3 form-check @if($errors->has('ativo')) is-invalid @endif">
-            <input class="form-check-input-Success" type="radio" name="ativo" id="ativo" value=false>
+            <input class="form-check-input-Success" type="radio" name="ativo" id="ativo" value="false">
                 <label class="form-check-label" for="flexRadioDefault1">
                     Inativo
                 </label>

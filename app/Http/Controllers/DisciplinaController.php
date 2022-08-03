@@ -51,9 +51,24 @@ class DisciplinaController extends Controller{
             'nome' => $request->nome,
             'curso_id' => $request->curso,
             'carga' => $request->carga,
+
+
         ]);
-        
-        return redirect()->route('disciplinas.index');
+
+        $obj_disciplina = new Disciplina();
+        $obj_curso = Curso::find($request->curso_id);
+
+        if(isset($obj_curso)){
+            $obj_disciplina->nome = $request->nome;
+            $obj_disciplina->curso()->associate($obj_curso);
+            $obj_disciplina->carga = $request->carga;
+            $obj_disciplina->save();
+            return redirect()->route('disciplinas.index');
+        }
+        else{
+            return "<h1>ID: $id não encontrado!"; 
+            return redirect()->route('disciplinas.index');
+        }
     }
    
     public function show($id){
@@ -82,20 +97,22 @@ class DisciplinaController extends Controller{
 
     public function update(Request $request, $id){
          
-        $curso = Curso::all();
-        $obj = Disciplina::find($id);
+        $obj_curso = Curso::find($request->curso_id);
+        $obj_disciplina = Disciplina::find($id);
 
-        if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
+        if(isset($obj_curso)){
+            $obj_disciplina->nome = $request->nome;
+            $obj_disciplina->curso()->associate($obj_curso);
+            $obj_disciplina->carga = $request->carga;
+            return redirect()->route('disciplinas.index');
+            $obj_disciplina->save();
+        }
+        else{
+            return "<h1>ID: $id não encontrado!"; 
+            return redirect()->route('disciplinas.index');
+        }
 
-        $obj->fill([
-            'nome' => $request->nome,
-            'curso_id' => $request->curso,
-            'carga' => $request->carga,
-        ]);
-
-        $obj->save();
-
-        return redirect()->route('disciplinas.index');
+    
     }
 
     public function destroy($id){
